@@ -6,6 +6,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "apps", "apps", "{1787FE1D-0
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "studio-api", "apps\studio-api\studio-api.csproj", "{D3122914-0D60-9723-E8A5-985429E16FD0}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "recommender-api", "apps\recommender-api\recommender-api.csproj", "{97F282AB-121D-31E5-D3CB-EE198B61903A}"
+EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "gateway", "apps\gateway\gateway.csproj", "{82A01B4B-25F1-D26C-6FFC-903F92E0F47D}"
 EndProject
 Global
@@ -18,6 +20,10 @@ Global
 		{D3122914-0D60-9723-E8A5-985429E16FD0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D3122914-0D60-9723-E8A5-985429E16FD0}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D3122914-0D60-9723-E8A5-985429E16FD0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{97F282AB-121D-31E5-D3CB-EE198B61903A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{97F282AB-121D-31E5-D3CB-EE198B61903A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{97F282AB-121D-31E5-D3CB-EE198B61903A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{97F282AB-121D-31E5-D3CB-EE198B61903A}.Release|Any CPU.Build.0 = Release|Any CPU
 		{82A01B4B-25F1-D26C-6FFC-903F92E0F47D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{82A01B4B-25F1-D26C-6FFC-903F92E0F47D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{82A01B4B-25F1-D26C-6FFC-903F92E0F47D}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -28,9 +34,10 @@ Global
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{D3122914-0D60-9723-E8A5-985429E16FD0} = {1787FE1D-075E-9E68-7218-25F1BD1BBEAB}
+		{97F282AB-121D-31E5-D3CB-EE198B61903A} = {1787FE1D-075E-9E68-7218-25F1BD1BBEAB}
 		{82A01B4B-25F1-D26C-6FFC-903F92E0F47D} = {1787FE1D-075E-9E68-7218-25F1BD1BBEAB}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
-		SolutionGuid = {79DAF48A-590F-4941-9A3D-5376CBFD46D5}
+		SolutionGuid = {572FA415-37A6-4BE6-9EEF-31E398D5747E}
 	EndGlobalSection
 EndGlobal

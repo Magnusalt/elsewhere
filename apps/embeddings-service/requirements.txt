@@ -1,0 +1,13 @@
+# === Core model/AI stack ===
+sentence-transformers==2.7.0
+torch>=2.1.0
+numpy>=1.26.0
+
+# === Web framework ===
+fastapi==0.115.0
+uvicorn[standard]==0.30.0
+python-multipart==0.0.20
+
+# === Optional: integrations ===
+# qdrant-client==1.8.2   # to push vectors to Qdrant
+# python-dotenv==1.0.1   # for environment variable handling

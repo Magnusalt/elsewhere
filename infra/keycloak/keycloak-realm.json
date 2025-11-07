@@ -1,0 +1,61 @@
+{
+  "realm": "Elsewhere",
+  "enabled": true,
+  "roles": {
+    "realm": [
+      { "name": "traveler" },
+      { "name": "creator" },
+      { "name": "admin" }
+    ]
+  },
+  "clients": [
+    {
+      "clientId": "elsewhere-web",
+      "publicClient": true,
+      "redirectUris": [
+        "http://localhost:3000/*"
+      ],
+      "webOrigins": [
+        "*"
+      ],
+      "protocol": "openid-connect",
+      "standardFlowEnabled": true,
+      "implicitFlowEnabled": false,
+      "directAccessGrantsEnabled": false,
+      "serviceAccountsEnabled": false,
+      "rootUrl": "http://localhost:3000"
+    },
+    {
+      "clientId": "gateway-api",
+      "secret": "super-secret",
+      "publicClient": false,
+      "redirectUris": [
+        "http://localhost:8080/*"
+      ],
+      "protocol": "openid-connect",
+      "bearerOnly": true,
+      "serviceAccountsEnabled": false,
+      "directAccessGrantsEnabled": false
+    }
+  ],
+  "users": [
+    {
+      "username": "traveler@example.com",
+      "enabled": true,
+      "emailVerified": true,
+      "credentials": [
+        { "type": "password", "value": "traveler", "temporary": false }
+      ],
+      "realmRoles": ["traveler"]
+    },
+    {
+      "username": "creator@example.com",
+      "enabled": true,
+      "emailVerified": true,
+      "credentials": [
+        { "type": "password", "value": "creator", "temporary": false }
+      ],
+      "realmRoles": ["creator"]
+    }
+  ]
+}
