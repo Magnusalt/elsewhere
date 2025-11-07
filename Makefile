@@ -1,8 +1,15 @@
-up:
-	docker compose -f infra/compose/docker-compose.dev.yml up --build
+# Spin up the backend environment
+dev-up:
+	cd infra/compose && docker compose -f docker-compose.dev.backend.yml up -d
 
-down:
-	docker compose -f infra/compose/docker-compose.dev.yml down
+# Stop all containers
+dev-down:
+	cd infra/compose && docker compose -f docker-compose.dev.backend.yml down
 
-logs: ## logs -f: follow logs
-	docker compose -f infra/compose/docker-compose.dev.yml logs -f
+# Run frontend locally
+dev-web:
+	cd apps/web && pnpm dev
+
+# Full dev cycle (backend + frontend)
+dev:
+	make dev-up && make dev-web

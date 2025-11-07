@@ -8,6 +8,10 @@ st = SentenceTransformer("BAAI/bge-small-en-v1.5", device="cpu")
 bp = BlipProcessor.from_pretrained("Salesforce/blip-image-captioning-base")
 bm = BlipForConditionalGeneration.from_pretrained("Salesforce/blip-image-captioning-base")
 
+@app.get("/health")
+def health_check():
+    return "Healthy"
+
 @app.post("/embed-text")
 def embed_text(payload: dict):
     v = st.encode(payload["text"], normalize_embeddings=True).tolist()

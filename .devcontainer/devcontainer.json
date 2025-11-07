@@ -1,0 +1,19 @@
+{
+  "name": "Elsewhere Dev",
+  "dockerComposeFile": "../infra/compose/docker-compose.dev.backend.yml",
+  "service": "gateway", 
+  "workspaceFolder": "/workspace",
+  "runServices": ["gateway", "recommender", "studio", "embeddings", "postgres", "qdrant", "keycloak"],
+  "shutdownAction": "stopCompose",
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "ms-dotnettools.csharp",
+        "ms-python.python",
+        "ms-azuretools.vscode-docker",
+        "ms-vscode-remote.remote-containers"
+      ]
+    }
+  },
+  "postCreateCommand": "dotnet restore ../apps/gateway-api ../apps/studio-api ../apps/recommender-api"
+}
