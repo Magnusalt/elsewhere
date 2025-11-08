@@ -1,9 +1,4 @@
-﻿using Ikea.WebDefault.Authentication;
-using Ikea.WebDefault.Cors;
-using Ikea.WebDefault.Observability;
-using Ikea.WebDefault.ProblemDetails;
-using Ikea.WebDefault.Settings;
-using Microsoft.AspNetCore.Builder;
+﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
 

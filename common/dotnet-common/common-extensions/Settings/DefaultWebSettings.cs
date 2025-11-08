@@ -6,7 +6,7 @@ public sealed class DefaultWebSettings
 {
     public static string DefaultSettingsRoot = nameof(DefaultWebSettings);
 
-    [Required] public IkeaObservabilitySettings Observability { get; set; }
+    [Required] public DefaultObservabilitySettings Observability { get; set; }
 }
 public sealed class DefaultObservabilitySettings
 {
