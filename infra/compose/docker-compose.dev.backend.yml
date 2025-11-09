@@ -49,21 +49,19 @@ services:
       - backend
     environment:
       ASPNETCORE_ENVIRONMENT: Development
-    depends_on: [ postgres, qdrant, minio ]
+    depends_on: [ postgres, qdrant, minio, aspire-dashboard ]
 
   recommender-api:
-    image: mcr.microsoft.com/dotnet/sdk:10.0
-    working_dir: /app
-    volumes:
-      - ../../apps/recommender-api:/app
-    command: [ "dotnet", "watch", "run", "--urls", "http://0.0.0.0:8080" ]
+    build:
+      context: ../../
+      dockerfile: apps/recommender-api/Dockerfile
     expose:
       - "8080"
     networks:
       - backend
     environment:
       ASPNETCORE_ENVIRONMENT: Development
-    depends_on: [ postgres, qdrant, minio ]
+    depends_on: [ postgres, qdrant, minio, aspire-dashboard ]
 
   gateway:
     image: mcr.microsoft.com/dotnet/sdk:10.0
@@ -74,7 +72,7 @@ services:
     ports: [ "8080:8080" ]
     networks:
       - backend
-    depends_on: [ studio-api, recommender-api, embeddings ]
+    depends_on: [ studio-api, recommender-api, embeddings, aspire-dashboard ]
 
   keycloak:
     image: quay.io/keycloak/keycloak:25.0
@@ -88,6 +86,16 @@ services:
       - "8085:8080"
     networks:
       - backend
+
+  aspire-dashboard:
+    image: mcr.microsoft.com/dotnet/aspire-dashboard:latest
+    container_name: aspire-dashboard
+    ports:
+      - "18888:18888" # web UI
+      - "18889:18889" # OTLP gRPC
+    networks:
+      - backend
+
 
 volumes: { pg: {}, qdrant: {}, minio: {} }
 networks:

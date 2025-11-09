@@ -1,8 +1,8 @@
-using Azure.Monitor.OpenTelemetry.AspNetCore;
+using common_extensions.Settings;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
+using OpenTelemetry.Exporter;
 using OpenTelemetry.Logs;
 using OpenTelemetry.Metrics;
 using OpenTelemetry.Resources;
@@ -16,7 +16,8 @@ public static class DefaultObservabilityExtensions
     {
         public IServiceCollection AddDefaultObservability(IConfiguration configuration, IHostEnvironment environment)
         {
-            var settings = configuration.GetSection("DefaultWebSettings:Observability").Get<DefaultObservabilitySettings>() ??
+            var settings = configuration.GetSection("DefaultWebSettings:Observability")
+                               .Get<DefaultObservabilitySettings>() ??
                            throw new ArgumentNullException(nameof(configuration),
                                "Missing DefaultWebSettings:Observability");
             if (!settings.Enabled)
@@ -25,50 +26,41 @@ public static class DefaultObservabilityExtensions
                 return services;
             }
 
+            var otlpEndpoint = settings.OtlpEndpoint ?? "http://localhost:4317";
+
             var serviceName = settings.ServiceName ?? environment.ApplicationName;
-            var resourceBuilder = ResourceBuilder
-                .CreateDefault()
-                .AddService(serviceName,
-                    serviceVersion: typeof(DefaultObservabilityExtensions).Assembly.GetName().Version?.ToString());
 
-                AddOpenTelemetry(services, settings, resourceBuilder);
-                    
-
-            return services;
-        }
-
-        private static void AddOpenTelemetry(IServiceCollection serviceCollection, DefaultObservabilitySettings options,
-            ResourceBuilder resource)
-        {
-            var otlpEndpoint = options.OtlpEndpoint ?? "http://localhost:4317";
-
-            serviceCollection.AddOpenTelemetry()
+            services.AddOpenTelemetry()
+                .ConfigureResource(r => r
+                    .AddService(
+                        serviceName,
+                        serviceVersion: typeof(DefaultObservabilityExtensions).Assembly.GetName().Version?.ToString()))
                 .WithLogging(builder =>
                 {
                     builder
-                        .SetResourceBuilder(resource)
+                        .AddOtlpExporter(o => o.Endpoint = new Uri(otlpEndpoint));
+                })
+                .WithTracing(builder =>
+                {
+                    builder
+                        .SetSampler(new AlwaysOnSampler())
+                        .AddAspNetCoreInstrumentation()
+                        .AddHttpClientInstrumentation()
                         .AddOtlpExporter(o =>
                         {
                             o.Endpoint = new Uri(otlpEndpoint);
                         });
                 })
-                .WithTracing(builder =>
-                {
-                    builder
-                        .SetResourceBuilder(resource)
-                        .AddAspNetCoreInstrumentation()
-                        .AddHttpClientInstrumentation()
-                        .AddOtlpExporter(o => o.Endpoint = new Uri(otlpEndpoint));
-                })
                 .WithMetrics(builder =>
                 {
                     builder
-                        .SetResourceBuilder(resource)
                         .AddRuntimeInstrumentation()
                         .AddAspNetCoreInstrumentation()
                         .AddHttpClientInstrumentation()
                         .AddOtlpExporter(o => o.Endpoint = new Uri(otlpEndpoint));
                 });
+
+            return services;
         }
     }
 }

@@ -1,4 +1,7 @@
-﻿using Microsoft.AspNetCore.Builder;
+﻿using common_extensions.Observability;
+using common_extensions.ProblemDetails;
+using common_extensions.Settings;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -23,16 +26,6 @@ public static class WebDefaults
                 .AddDefaultProblemDetails();
                 
             return builder;
-        }
-    }
-
-    extension(WebApplication app)
-    {
-        public WebApplication UseDefaultPipeline()
-        {
-            app.UseDefaultObservability();
-            app.UseDefaultProblemDetails();
-            return app;
         }
     }
 }

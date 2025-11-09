@@ -7,4 +7,8 @@
     <RootNamespace>recommender_api</RootNamespace>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\..\common\dotnet-common\common-extensions\common-extensions.csproj" />
+  </ItemGroup>
+
 </Project>
