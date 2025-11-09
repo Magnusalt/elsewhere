@@ -38,13 +38,9 @@ services:
       - MODEL_PATH=/models/sentence-transformer
 
   studio-api:
-    image: mcr.microsoft.com/dotnet/sdk:10.0 # use sdk for dotnet watch, otherwise build image
-    working_dir: /app
-    volumes:
-      - ../../apps/studio-api:/app
-    command: [ "dotnet", "watch", "run", "--urls", "http://0.0.0.0:8080" ]
-    expose:
-      - "8080"
+    build: 
+      context: ../../
+      dockerfile: apps/studio-api/Dockerfile
     networks:
       - backend
     environment:
@@ -55,8 +51,6 @@ services:
     build:
       context: ../../
       dockerfile: apps/recommender-api/Dockerfile
-    expose:
-      - "8080"
     networks:
       - backend
     environment:
@@ -64,11 +58,9 @@ services:
     depends_on: [ postgres, qdrant, minio, aspire-dashboard ]
 
   gateway:
-    image: mcr.microsoft.com/dotnet/sdk:10.0
-    working_dir: /app
-    volumes:
-      - ../../apps/gateway:/app
-    command: [ "dotnet", "watch", "run", "--urls", "http://0.0.0.0:8080" ]
+    build: 
+      context: ../../
+      dockerfile: apps/gateway/Dockerfile
     ports: [ "8080:8080" ]
     networks:
       - backend
