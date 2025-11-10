@@ -64,6 +64,8 @@ services:
     ports: [ "8080:8080" ]
     networks:
       - backend
+    extra_hosts:
+      - "localhost:host-gateway"
     depends_on: [ studio-api, recommender-api, embeddings, aspire-dashboard ]
 
   keycloak:

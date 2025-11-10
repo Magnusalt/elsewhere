@@ -3,9 +3,15 @@
   "enabled": true,
   "roles": {
     "realm": [
-      { "name": "traveler" },
-      { "name": "creator" },
-      { "name": "admin" }
+      {
+        "name": "traveler"
+      },
+      {
+        "name": "creator"
+      },
+      {
+        "name": "admin"
+      }
     ]
   },
   "clients": [
@@ -44,18 +50,31 @@
       "enabled": true,
       "emailVerified": true,
       "credentials": [
-        { "type": "password", "value": "traveler", "temporary": false }
+        {
+          "type": "password",
+          "value": "traveler",
+          "temporary": false
+        }
       ],
-      "realmRoles": ["traveler"]
+      "realmRoles": [
+        "traveler"
+      ]
     },
     {
       "username": "creator@example.com",
       "enabled": true,
       "emailVerified": true,
       "credentials": [
-        { "type": "password", "value": "creator", "temporary": false }
+        {
+          "type": "password",
+          "value": "creator",
+          "temporary": false
+        }
       ],
-      "realmRoles": ["creator"]
+      "realmRoles": [
+        "traveler",
+        "creator"
+      ]
     }
   ]
 }
