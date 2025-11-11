@@ -9,8 +9,7 @@ client_id=elsewhere-web
     &grant_type=password
 
 ### 2️⃣ Call the debug endpoint through the Gateway
-@accessToken = {{getToken.response.body.$.access_token}}
 
-GET http://localhost:8080/recommender/health
-Authorization: Bearer {{accessToken}}
+GET http://localhost:8080/studio/health
+Authorization: Bearer *Add_Token*
 Accept: application/json

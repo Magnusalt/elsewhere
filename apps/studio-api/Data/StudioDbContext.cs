@@ -36,5 +36,6 @@ public class MomentImageConfiguration : IEntityTypeConfiguration<MomentImage>
     public void Configure(EntityTypeBuilder<MomentImage> builder)
     {
         builder.Property(mi => mi.Url).HasMaxLength(200).IsRequired();
+        builder.Property(mi => mi.Caption).HasMaxLength(200);
     }
 }

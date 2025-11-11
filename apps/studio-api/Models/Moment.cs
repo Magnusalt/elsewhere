@@ -14,8 +14,6 @@ public class Moment
     public List<MomentImage> Images { get; init; } = [];
 
     public DateTime CreatedAt { get; init; } = DateTime.UtcNow;
-    public DateTime UpdatedAt { get; set; } = DateTime.UtcNow;
-    
     public PublishState  PublishState { get; set; } 
 }
 

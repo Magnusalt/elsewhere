@@ -1,5 +1,6 @@
 using System.Security.Claims;
 using common_extensions.Observability;
+using gateway.Transforms;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using Yarp.ReverseProxy.Transforms;
@@ -40,32 +41,7 @@ builder.Services
     .LoadFromConfig(builder.Configuration.GetSection("ReverseProxy"))
     .AddTransforms(builderContext =>
     {
-        builderContext.AddRequestTransform(async transformContext =>
-        {
-            var user = transformContext.HttpContext.User;
-
-            if (user?.Identity?.IsAuthenticated == true)
-            {
-                var sub = user.FindFirst("sub")?.Value
-                          ?? user.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-
-                var email = user.FindFirst("preferred_username")?.Value
-                         ?? user.FindFirst(ClaimTypes.Email)?.Value;
-
-                var roleClaims = user.FindAll(ClaimTypes.Role).Select(r => r.Value).ToList();
-
-                if (!string.IsNullOrEmpty(sub))
-                    transformContext.ProxyRequest.Headers.Add("X-User-Id", sub);
-
-                if (!string.IsNullOrEmpty(email))
-                    transformContext.ProxyRequest.Headers.Add("X-User-Email", email);
-
-                if (roleClaims.Count > 0)
-                    transformContext.ProxyRequest.Headers.Add("X-User-Roles", string.Join(",", roleClaims));
-            }
-
-            await Task.CompletedTask;
-        });
+        builderContext.AddRequestTransform(UserClaimsTransform.AddUserClaimsToHeaders);
     });
 
 var app = builder.Build();

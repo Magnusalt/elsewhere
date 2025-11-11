@@ -1,25 +1,31 @@
-using System.Security.Claims;
 using common_extensions;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.IdentityModel.Tokens;
+using studio_api.Data;
 using studio_api.Features;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.AddDefaults();
 
+builder.Services.AddNpgsql<StudioDbContext>(builder.Configuration.GetConnectionString("studio"));
+
 var app = builder.Build();
 
-app.MapMomentRoutes();
-
-app.MapGet("/debug-user", (HttpContext ctx) =>
+using (var scope = app.Services.CreateScope())
 {
-    var id = ctx.Request.Headers["X-User-Id"];
-    var email = ctx.Request.Headers["X-User-Email"].ToString();
-    var roles = ctx.Request.Headers["X-User-Roles"].ToString();
+    var db = scope.ServiceProvider.GetRequiredService<StudioDbContext>();
 
-    return Results.Json(new { id, email, roles });
-});
+    try
+    {
+        db.Database.EnsureCreated();
+    }
+    catch (Exception ex)
+    {
+        var logger = scope.ServiceProvider.GetRequiredService<ILogger<Program>>();
+        logger.LogError(ex, "Failed to initialize database.");
+    }
+}
+
+app.MapMomentRoutes();
 
 app.MapGet("/health", () => Results.Ok("Healthy"));
 
