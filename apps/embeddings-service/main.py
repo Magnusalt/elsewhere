@@ -12,9 +12,22 @@ bm = BlipForConditionalGeneration.from_pretrained("Salesforce/blip-image-caption
 def health_check():
     return "Healthy"
 
-@app.post("/embed-text")
+@app.post("/embed-moment")
 def embed_text(payload: dict):
-    v = st.encode(payload["text"], normalize_embeddings=True).tolist()
+    title = payload.get("title", "")
+    subtitle = payload.get("subtitle", "")
+    destination = payload.get("destination", "")
+    vibe = payload.get("vibe", "")
+    
+    combined = f"{title}. {subtitle}. Destination: {destination}. Mood: {vibe}."
+    v = st.encode(combined, normalize_embeddings=True).tolist()
+    return {"vector": v}
+
+@app.post("/embed-query")
+def embed_text(payload: dict):
+    query = payload.get("query", "")
+    
+    v = st.encode(query, normalize_embeddings=True).tolist()
     return {"vector": v}
 
 @app.post("/embed-image")

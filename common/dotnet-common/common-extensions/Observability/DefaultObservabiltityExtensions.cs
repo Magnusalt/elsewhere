@@ -2,7 +2,6 @@ using common_extensions.Settings;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using OpenTelemetry.Exporter;
 using OpenTelemetry.Logs;
 using OpenTelemetry.Metrics;
 using OpenTelemetry.Resources;
@@ -46,10 +45,7 @@ public static class DefaultObservabilityExtensions
                         .SetSampler(new AlwaysOnSampler())
                         .AddAspNetCoreInstrumentation()
                         .AddHttpClientInstrumentation()
-                        .AddOtlpExporter(o =>
-                        {
-                            o.Endpoint = new Uri(otlpEndpoint);
-                        });
+                        .AddOtlpExporter(o => o.Endpoint = new Uri(otlpEndpoint));
                 })
                 .WithMetrics(builder =>
                 {

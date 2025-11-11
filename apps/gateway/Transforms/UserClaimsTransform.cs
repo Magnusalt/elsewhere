@@ -9,10 +9,7 @@ public static class UserClaimsTransform
     {
         var user = transformContext.HttpContext.User;
 
-        if (user?.Identity?.IsAuthenticated != true)
-        {
-            return ValueTask.CompletedTask;
-        }
+        if (user?.Identity?.IsAuthenticated != true) return ValueTask.CompletedTask;
 
         var sub = user.FindFirst("sub")?.Value
                   ?? user.FindFirst(ClaimTypes.NameIdentifier)?.Value;

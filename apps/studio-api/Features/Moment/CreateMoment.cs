@@ -1,6 +1,7 @@
 using System.ComponentModel.DataAnnotations;
-using System.Security.Claims;
+using System.Threading.Channels;
 using Microsoft.AspNetCore.Mvc;
+using studio_api.BackgroundServices;
 using studio_api.Data;
 using studio_api.Models;
 
@@ -16,14 +17,16 @@ public static class CreateMoment
     }
 
     private static async Task<IResult> Handle(HttpContext context, [FromBody] CreateMomentRequest request,
-        [FromServices] StudioDbContext dbContext)
+        [FromServices] StudioDbContext dbContext, [FromServices] Channel<MessageSignal> outboxMessageChannel)
     {
+        var cancellation = context.RequestAborted;
+
         // TODO: create a middleware that adds this to context.User
         var userId = context.Request.Headers["X-User-Id"].ToString();
         if (string.IsNullOrEmpty(userId))
             return Results.Unauthorized();
 
-        var entity = await dbContext.Moments.AddAsync(new Models.Moment
+        var moment = new Models.Moment
         {
             Title = request.Title,
             Destination = request.Destination ?? string.Empty,
@@ -31,11 +34,22 @@ public static class CreateMoment
             Vibe = request.Vibe ?? string.Empty,
             OwnerId = userId,
             PublishState = PublishState.Draft
-        });
+        };
 
-        await dbContext.SaveChangesAsync();
+        var outboxMessage = new OutboxMessage
+        {
+            EntityId = moment.Id,
+            Type = MessageType.MomentCreated,
+            Processed = false
+        };
 
-        return Results.Ok(new CreateMomentResponse(entity.Entity.Id));
+        await dbContext.AddRangeAsync(moment, outboxMessage);
+
+        await dbContext.SaveChangesAsync(cancellation);
+
+        await outboxMessageChannel.Writer.WriteAsync(new MessageSignal(outboxMessage.Id), cancellation);
+
+        return Results.Ok(new CreateMomentResponse(moment.Id));
     }
 
     public record CreateMomentRequest(

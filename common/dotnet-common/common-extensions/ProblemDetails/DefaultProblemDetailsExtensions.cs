@@ -14,14 +14,14 @@ public static class DefaultProblemDetailsExtensions
         public IServiceCollection AddDefaultProblemDetails()
         {
             services.AddExceptionHandler<DefaultProblemDetailsHandler>();
-            services.AddProblemDetails(); // registers the standard helpers
-
+            services.AddProblemDetails(); 
             return services;
         }
     }
 }
 
-internal sealed class DefaultProblemDetailsHandler(ILogger<DefaultProblemDetailsHandler> logger,
+internal sealed class DefaultProblemDetailsHandler(
+    ILogger<DefaultProblemDetailsHandler> logger,
     IProblemDetailsService problemDetailsService) : IExceptionHandler
 {
     public async ValueTask<bool> TryHandleAsync(HttpContext context, Exception exception, CancellationToken token)
@@ -62,9 +62,8 @@ internal sealed class DefaultProblemDetailsHandler(ILogger<DefaultProblemDetails
         {
             HttpContext = context,
             Exception = exception,
-            ProblemDetails = problem,
-            
+            ProblemDetails = problem
         });
-        return true; // marks as handled
+        return true;
     }
 }

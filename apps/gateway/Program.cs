@@ -1,4 +1,3 @@
-using System.Security.Claims;
 using common_extensions.Observability;
 using gateway.Transforms;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -16,14 +15,14 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
         options.Audience = builder.Configuration["Authentication:Audience"] ?? "elsewhere-web";
         options.RequireHttpsMetadata = false;
         options.SaveToken = true;
-        
+
         options.TokenValidationParameters = new TokenValidationParameters
         {
             ValidateIssuer = true,
             ValidateAudience = true,
             ValidateLifetime = true,
             ValidateIssuerSigningKey = true,
-            NameClaimType = "preferred_username",
+            NameClaimType = "preferred_username"
         };
     });
 
@@ -47,19 +46,6 @@ builder.Services
 var app = builder.Build();
 
 app.UseAuthentication();
-app.Use(async (context, next) =>
-{
-    if (context.Request.Headers.TryGetValue("Authorization", out var header))
-    {
-        Console.WriteLine($"[Gateway] Incoming Authorization: {header}");
-    }
-    else
-    {
-        Console.WriteLine("[Gateway] No Authorization header found");
-    }
-
-    await next();
-});
 app.UseAuthorization();
 app.MapReverseProxy();
 

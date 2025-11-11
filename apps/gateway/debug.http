@@ -3,10 +3,13 @@
 POST http://localhost:8085/realms/Elsewhere/protocol/openid-connect/token
 Content-Type: application/x-www-form-urlencoded
 
-client_id=elsewhere-web
-    &username=traveler@example.com
-    &password=traveler
-    &grant_type=password
+client_id = elsewhere-web
+    &
+username = traveler@example.com
+    &
+password = traveler
+    &
+grant_type = password
 
 ### 2️⃣ Call the debug endpoint through the Gateway
 

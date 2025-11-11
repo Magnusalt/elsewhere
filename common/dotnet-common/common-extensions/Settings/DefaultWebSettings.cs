@@ -8,6 +8,7 @@ public sealed class DefaultWebSettings
 
     [Required] public DefaultObservabilitySettings Observability { get; set; }
 }
+
 public sealed class DefaultObservabilitySettings
 {
     public bool Enabled { get; set; } = true;

@@ -8,6 +8,7 @@ public class StudioDbContext(DbContextOptions<StudioDbContext> options) : DbCont
 {
     public DbSet<Moment> Moments => Set<Moment>();
     public DbSet<MomentImage> MomentImages => Set<MomentImage>();
+    public DbSet<OutboxMessage> OutboxMessages => Set<OutboxMessage>();
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -37,5 +38,14 @@ public class MomentImageConfiguration : IEntityTypeConfiguration<MomentImage>
     {
         builder.Property(mi => mi.Url).HasMaxLength(200).IsRequired();
         builder.Property(mi => mi.Caption).HasMaxLength(200);
+    }
+}
+
+public class OutboxMessageConfiguration : IEntityTypeConfiguration<OutboxMessage>
+{
+    public void Configure(EntityTypeBuilder<OutboxMessage> builder)
+    {
+        builder.Property(om => om.EntityId).IsRequired();
+        builder.Property(om => om.Type).IsRequired();
     }
 }

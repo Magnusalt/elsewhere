@@ -24,7 +24,7 @@ public static class WebDefaults
             builder.Services
                 .AddDefaultObservability(builder.Configuration, builder.Environment)
                 .AddDefaultProblemDetails();
-                
+
             return builder;
         }
     }
