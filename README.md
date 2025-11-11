@@ -13,3 +13,10 @@ This repository is designed to explore modern software development practices, in
 	•	Polyglot orchestration with Python, C#, and modern CI/CD workflows
 
 The application itself revolves around suggesting travel destinations based on personal preferences and moods rather than predefined filters. 
+
+### Known issues
+
++ No Tests
++ Auth via Keycloak not rock solid
++ No instructions on how to get started
++ web app is just default next.js starter
